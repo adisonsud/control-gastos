@@ -1,7 +1,7 @@
 import {useState} from 'react'
 import Mensaje from './Mensaje'
 
-const NuevoPresupuesto = ({presupuesto, setPresupuesto}) => {
+const NuevoPresupuesto = ({presupuesto, setPresupuesto, setIsValidPresupuesto}) => {
 
   const [mensaje, setMensaje] = useState('')
 
@@ -10,12 +10,16 @@ const NuevoPresupuesto = ({presupuesto, setPresupuesto}) => {
   const handlePresupuesto = (e) => {
     e.preventDefault();
 
-    if (!Number(presupuesto) || Number(presupuesto) < 0) {
-      setMensaje('no es un presupuesto valido');
-    } else{
-      setMensaje('si es un presupuesto valido');
-    }
-
+    if (!presupuesto || presupuesto < 0) {
+      setMensaje('No es un presupuesto valido')
+      return /* si cumple con esta condicion termina aqui con el return*/
+    } 
+    setMensaje('') /* si se corrije y se pone un presupuesto valido se borra el mensaje de error del State */
+  
+  //------------------------------------------------------------------------------- 
+  /* si el presupuesto es válido */
+  setIsValidPresupuesto(true)
+  
   } /* Fin de handlePresupuesto */
   //------------------------------------------------------------------------------- 
 
@@ -28,11 +32,11 @@ const NuevoPresupuesto = ({presupuesto, setPresupuesto}) => {
               
                 <input /* imput */
                   className='nuevo-presupuesto' 
-                  type="text" 
+                  type="number" 
                   placeholder='Añade tu Presupuesto'
                   value={presupuesto} /* se ingresa el valor inicial (0) que ingrese en app.jsx del useState */
-                  onChange = { e => setPresupuesto(e.target.value)}/* lo que el usuario esta agregando en este input 
-                                                                      se vaya agregando en la variable de setPresupuesto*/
+                  onChange = { e => setPresupuesto(Number(e.target.value))} /* lo que el usuario esta agregando 
+                  en este input se irá agregando en la variable de setPresupuesto*/
                 /> {/* fin del input */}
             
             </div>
