@@ -8,10 +8,17 @@ function App() {
   const [presupuesto, setPresupuesto] = useState(0)
   const [isValidPresupuesto, setIsValidPresupuesto] = useState(false)
   const [modal, setModal] = useState(false)
+  const [animarModal, setAnimarModal] = useState(false)
 
   /* configuracion al clickear la img "+" */
   const handleNuevoGasto = () => {
+    /* despues de darle click se abrirá el modal */
     setModal(true)
+
+    /* le da 3 segundos para que aparezca el modal */
+    setTimeout(() => {
+      setAnimarModal(true)
+    }, 300);
   }
 
   return (
@@ -36,7 +43,11 @@ function App() {
         </div>
       )}
 
-      {modal && <Modal/>}
+      {modal && <Modal
+                  setModal = {setModal}
+                  animarModal = {animarModal}
+                  setAnimarModal = {setAnimarModal}
+                />}
 
     </div> 
   )
