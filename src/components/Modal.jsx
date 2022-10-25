@@ -1,7 +1,15 @@
 /* Modal es e toda la pantalla que aperece al precionar el agregar "+" */
+import { useState } from 'react'
 import CerrarBtn from '../img/cerrar.svg' 
+import Mensaje from './Mensaje'
 
 const Modal = ({setModal, animarModal, setAnimarModal}) => {
+
+  const [mensaje, setMensaje] = useState('')
+  const [nombre, setNombre] = useState('')
+  const [cantidad, setCantidad] = useState('')
+  const [categoria, setCategoria] = useState('')
+  
 
   const ocultarModal = () => {
     /* esto permite ocultar el modal */
@@ -10,6 +18,17 @@ const Modal = ({setModal, animarModal, setAnimarModal}) => {
     setTimeout(() => {
       setModal(false)  
     }, 500);
+  }
+
+  const handleSubmit = e => {
+    e.preventDefault(); /* se usa para prevenir la accion por default que es enviar el formulario */
+    
+    /* le decimos si alguno de los tres esta vacio entoncess */
+    if ([nombre, cantidad, categoria].includes('')) {
+      
+    } else {
+      
+    }
   }
 
   return (
@@ -29,7 +48,11 @@ const Modal = ({setModal, animarModal, setAnimarModal}) => {
         {/* le agrego la clase ""formulario */}
         {/* si animarModal es true entonces le agrego la clase de animar el cual tiene opacity: 1*/}
         {/* sino entonces le agrego la clase cerrar el cual tiene opacity: 0*/}
-        <form className={`formulario ${animarModal ? "animar" : 'false' }`}>
+        <form 
+          onSubmit={handleSubmit} /* configuracion para enviar form */
+          className={`formulario ${animarModal ? "animar" : 'false' }`}
+        >
+          
           <legend>Nuevo Gasto</legend>
           
           {/* Nombre */}
@@ -38,7 +61,13 @@ const Modal = ({setModal, animarModal, setAnimarModal}) => {
             <input 
                 id='nombre' 
                 type="text" 
-                placeholder='Añade el nombre del gasto'/>
+                placeholder='Añade el nombre del gasto'
+                /* es importante llamar el state con value de lo contrario no sincronizara bien */
+                value= {nombre} /* si lo dejamos vacio no nos permitira escribir */
+                
+                /* seguido le vamos a asociar el evento que va ir actualizando el state  */
+                onChange = { e => setNombre(e.target.value)}
+                />
           </div> {/* fin de nombre */}
           
           {/* Cantidad */}
@@ -47,13 +76,21 @@ const Modal = ({setModal, animarModal, setAnimarModal}) => {
             <input 
                 id='cantidad' 
                 type="number" 
-                placeholder='Añade la cantidad del gasto: ej. 300'/>
+                placeholder='Añade la cantidad del gasto: ej. 300'
+                value={cantidad}
+                onChange = { e => setCantidad(Number(e.target.value))}
+                />
+
           </div> {/* fin de Cantidad */}
 
           {/* Categoria */}
           <div className="campo">
             <label htmlFor="Categoria">Categoría</label> {/* label */}
-            <select id='Categoria'>
+            <select 
+              id='Categoria'
+              value={categoria}
+              onChange={e => setCategoria(e.target.value)}
+            >
               <option value="">-- Seleccione--</option>
               <option value="ahorro">Ahorro</option>
               <option value="comida">Comida</option>
