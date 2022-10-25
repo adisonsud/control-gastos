@@ -5,6 +5,7 @@
 import { useState } from 'react'
 import Header from './components/Header'
 import Modal from './components/Modal'
+import { generarId } from './helpers'
 import IconoNuevoGasto from './img/nuevo-gasto.svg'
 
 function App() {
@@ -13,6 +14,7 @@ function App() {
   const [isValidPresupuesto, setIsValidPresupuesto] = useState(false)
   const [modal, setModal] = useState(false)
   const [animarModal, setAnimarModal] = useState(false)
+  const [gastos, setGastos] = useState([])
 
   /* configuracion al clickear la img "+" */
   const handleNuevoGasto = () => {
@@ -23,6 +25,17 @@ function App() {
     setTimeout(() => {
       setAnimarModal(true)
     }, 300);
+  }
+
+  const guardarGasto = gasto => {
+    gasto.id = generarId() /* le agregamos y generamos un nuevo Id */
+    setGastos([...gastos, gasto])
+    
+    /* Permite ocultar el Id al darle click en añadir gasto */
+    setAnimarModal(false)
+    setTimeout(() => {
+      setModal(false)  
+    }, 500);
   }
 
   return (
@@ -51,6 +64,7 @@ function App() {
                   setModal = {setModal}
                   animarModal = {animarModal}
                   setAnimarModal = {setAnimarModal}
+                  guardarGasto = {guardarGasto}
                 />}
 
     </div> 

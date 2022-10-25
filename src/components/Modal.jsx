@@ -1,15 +1,14 @@
 /* Modal es e toda la pantalla que aperece al precionar el agregar "+" */
 import { useState } from 'react'
-import CerrarBtn from '../img/cerrar.svg' 
 import Mensaje from './Mensaje'
+import CerrarBtn from '../img/cerrar.svg' 
 
-const Modal = ({setModal, animarModal, setAnimarModal}) => {
+const Modal = ({setModal, animarModal, setAnimarModal, guardarGasto}) => {
 
   const [mensaje, setMensaje] = useState('')
   const [nombre, setNombre] = useState('')
   const [cantidad, setCantidad] = useState('')
   const [categoria, setCategoria] = useState('')
-  
 
   const ocultarModal = () => {
     /* esto permite ocultar el modal */
@@ -25,10 +24,15 @@ const Modal = ({setModal, animarModal, setAnimarModal}) => {
     
     /* le decimos si alguno de los tres esta vacio entoncess */
     if ([nombre, cantidad, categoria].includes('')) {
+      setMensaje("Todos los campos son obligatorios")
       
-    } else {
-      
+      setTimeout(() => {
+        setMensaje('')
+      }, 2000);
+      return
     }
+    
+    guardarGasto({nombre,cantidad, categoria})
   }
 
   return (
@@ -43,6 +47,7 @@ const Modal = ({setModal, animarModal, setAnimarModal}) => {
               />
         </div> {/* fin del boton cerrar */}
 
+
         {/* --------------------------------------------------- */}
         {/* formulario */}
         {/* le agrego la clase ""formulario */}
@@ -55,6 +60,10 @@ const Modal = ({setModal, animarModal, setAnimarModal}) => {
           
           <legend>Nuevo Gasto</legend>
           
+          {/* cuando mensaje tenga algo vamos a cargar el componete de mensaje y como tenemos el children,
+           despues le seteamos el mensaje q esta dentro de handleSubmit */}
+          {mensaje && <Mensaje tipo="error">{mensaje}</Mensaje>}     
+
           {/* Nombre */}
           <div className="campo">
             <label htmlFor="nombre">Nombre Gasto</label> {/* label */}
