@@ -11,11 +11,11 @@ import IconoNuevoGasto from './img/nuevo-gasto.svg'
 
 function App() {
 
+  const [gastos, setGastos] = useState([])
   const [presupuesto, setPresupuesto] = useState(0)
   const [isValidPresupuesto, setIsValidPresupuesto] = useState(false)
   const [modal, setModal] = useState(false)
   const [animarModal, setAnimarModal] = useState(false)
-  const [gastos, setGastos] = useState([])
 
   /* configuracion al clickear la img "+" */
   const handleNuevoGasto = () => {
@@ -41,10 +41,11 @@ function App() {
   }
 
   return (
-    <div>
+    <div className={modal ? 'fijar' : ''}>
       
-      <Header
+      <Header 
       /* lo exportamos al Header */
+        gastos = {gastos}
         presupuesto = {presupuesto} 
         setPresupuesto = {setPresupuesto} 
         isValidPresupuesto = {isValidPresupuesto}

@@ -30,9 +30,12 @@ const Gasto = ({gasto}) => {
       <div className="contenido-gasto">
 
         {/* Imagenenes */}
-          <img src="" alt="" />
+          <img 
+            src={diccionarioIconos[categoria]} 
+            alt="Iconos Gastos" 
+            />
 
-
+        {/* ------------------------------------------------ */}
         {/* descripcion del gasto */}
         <div className="descripcion-gasto">
           <p className="categoria">{categoria}</p>
