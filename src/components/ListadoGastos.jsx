@@ -1,0 +1,21 @@
+import React from 'react'
+import Gasto from './Gasto'
+
+const ListadoGastos = ({gastos}) => {
+  return (
+    <div className='listado-gastos contenedor'> 
+        <h2>{gastos.length ? 'Gastos' : 'No hay Gastos aún'}</h2>
+
+        {/* el map se va a ejecutar una vez por cada elemento que haya */}
+        {gastos.map( gasto => (
+            <Gasto
+                key = {gasto.id}
+                gasto = {gasto}
+
+            />
+        ))}
+    </div>
+  )
+}
+
+export default ListadoGastos

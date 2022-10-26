@@ -5,6 +5,7 @@
 import { useState } from 'react'
 import Header from './components/Header'
 import Modal from './components/Modal'
+import ListadoGastos from './components/ListadoGastos'
 import { generarId } from './helpers'
 import IconoNuevoGasto from './img/nuevo-gasto.svg'
 
@@ -29,6 +30,7 @@ function App() {
 
   const guardarGasto = gasto => {
     gasto.id = generarId() /* le agregamos y generamos un nuevo Id */
+    gasto.fecha = Date.now()
     setGastos([...gastos, gasto])
     
     /* Permite ocultar el Id al darle click en añadir gasto */
@@ -51,13 +53,20 @@ function App() {
 
       {/* Al poner '&&' le decimos q si es un presupuesto valido se ejecutara el codigo */}
       {isValidPresupuesto && (
-        <div className='nuevo-gasto'>
-          <img 
-            src={IconoNuevoGasto} 
-            alt="icono nuevo gasto" 
-            onClick = {handleNuevoGasto} /* click a esta imagen */
-          />
-        </div>
+        <> {/* retornamos un fragment */}
+          <main>
+            <ListadoGastos
+              gastos = {gastos}
+            />
+          </main>  
+          <div className='nuevo-gasto'>
+            <img 
+              src={IconoNuevoGasto} 
+              alt="icono nuevo gasto" 
+              onClick = {handleNuevoGasto} /* click a esta imagen */
+            />
+          </div>
+        </>
       )}
 
       {modal && <Modal
