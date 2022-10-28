@@ -1,6 +1,6 @@
 import { useState ,useEffect } from "react"
 
-const ControlPresupuesto = ({presupuesto, gastos}) => {
+const ControlPresupuesto = ({gastos, presupuesto}) => {
 
   const [disponible,setDisponible] = useState(0)
   const [gastado,setGastado] = useState(0)
