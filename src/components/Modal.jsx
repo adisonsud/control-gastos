@@ -1,14 +1,29 @@
 /* Modal es e toda la pantalla que aperece al precionar el agregar "+" */
-import { useState } from 'react'
+import { useState, useEffect } from 'react'
 import Mensaje from './Mensaje'
 import CerrarBtn from '../img/cerrar.svg' 
+import Gasto from './Gasto'
 
-const Modal = ({setModal, animarModal, setAnimarModal, guardarGasto}) => {
+const Modal = ({setModal, animarModal, setAnimarModal, guardarGasto, gastoEditar}) => {
 
   const [mensaje, setMensaje] = useState('')
   const [nombre, setNombre] = useState('')
   const [cantidad, setCantidad] = useState('')
   const [categoria, setCategoria] = useState('')
+  const [Id, setId] = useState('')
+
+  useEffect(() => {
+    /* si gasto editar viene vacio pues es un registro nuevo.
+    pero si viene con algo entonces estamos editando, si estamos editando vamos a llenar los campos 
+    con los hooks setNombre, setCantidad y setCategoria*/
+    if( Object.keys(gastoEditar).length > 0 ){
+      setNombre(gastoEditar.nombre)
+      setCantidad(gastoEditar.cantidad)
+      setCategoria(gastoEditar.categoria)
+      setId(gastoEditar.id)
+    } 
+  }, [])
+  
 
   const ocultarModal = () => {
     /* esto permite ocultar el modal */
@@ -32,7 +47,7 @@ const Modal = ({setModal, animarModal, setAnimarModal, guardarGasto}) => {
       return
     }
     
-    guardarGasto({nombre,cantidad, categoria})
+    guardarGasto({nombre, cantidad, categoria, id})
   }
 
   return (
@@ -58,7 +73,7 @@ const Modal = ({setModal, animarModal, setAnimarModal, guardarGasto}) => {
           className={`formulario ${animarModal ? "animar" : 'false' }`}
         >
           
-          <legend>Nuevo Gasto</legend>
+          <legend>{gastoEditar.nombre ? 'EDITAR GASTO' : 'NUEVO GASTO'}</legend>
           
           {/* cuando mensaje tenga algo vamos a cargar el componete de mensaje y como tenemos el children,
            despues le seteamos el mensaje q esta dentro de handleSubmit */}
@@ -111,7 +126,7 @@ const Modal = ({setModal, animarModal, setAnimarModal, guardarGasto}) => {
             </select> 
           </div> {/* fin de Categoria */}
 
-          <input type="submit" value="Añadir Gasto"/> {/* Boton Añadir Gasto */}
+          <input type="submit" value={gastoEditar.nombre ? 'GUARDAR CAMBIOS' : 'AÑADIR GASTO'}/> {/* Boton Añadir Gasto */}
 
         </form>{/* fin del formulario */}
     </div>
