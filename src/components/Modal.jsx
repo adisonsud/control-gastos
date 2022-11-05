@@ -10,7 +10,9 @@ const Modal = ({setModal, animarModal, setAnimarModal, guardarGasto, gastoEditar
   const [nombre, setNombre] = useState('')
   const [cantidad, setCantidad] = useState('')
   const [categoria, setCategoria] = useState('')
-  const [Id, setId] = useState('')
+  const [fecha, setFecha] = useState('')
+  const [id, setId] = useState('') /* la forma de saber si estamos editando o 
+  si estamos creando un nuevo registro es creando  const [id, setId] = useState('')*/
 
   useEffect(() => {
     /* si gasto editar viene vacio pues es un registro nuevo.
@@ -21,6 +23,7 @@ const Modal = ({setModal, animarModal, setAnimarModal, guardarGasto, gastoEditar
       setCantidad(gastoEditar.cantidad)
       setCategoria(gastoEditar.categoria)
       setId(gastoEditar.id)
+      setFecha(gastoEditar.fecha)
     } 
   }, [])
   
@@ -47,7 +50,7 @@ const Modal = ({setModal, animarModal, setAnimarModal, guardarGasto, gastoEditar
       return
     }
     
-    guardarGasto({nombre, cantidad, categoria, id})
+    guardarGasto({nombre, cantidad, categoria, id, fecha})
   }
 
   return (
@@ -126,7 +129,10 @@ const Modal = ({setModal, animarModal, setAnimarModal, guardarGasto, gastoEditar
             </select> 
           </div> {/* fin de Categoria */}
 
-          <input type="submit" value={gastoEditar.nombre ? 'GUARDAR CAMBIOS' : 'AÑADIR GASTO'}/> {/* Boton Añadir Gasto */}
+          <input 
+            type="submit" 
+            value={gastoEditar.nombre ? 'GUARDAR CAMBIOS' : 'AÑADIR GASTO'}
+          /> {/* Boton Añadir Gasto */}
 
         </form>{/* fin del formulario */}
     </div>

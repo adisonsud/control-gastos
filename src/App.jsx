@@ -47,9 +47,22 @@ function App() {
   }
 
   const guardarGasto = gasto => {
-    gasto.id = generarId() /* le agregamos y generamos un nuevo Id */
-    gasto.fecha = Date.now()
-    setGastos([...gastos, gasto])
+    if(gasto.id){
+      /* actualizar o modificacion de los gastos */
+      const gastosActualizados = gastos.map( gastoState => gastoState.id === 
+        gasto.id ? gasto : gastoState)
+      /* ejemplo : Si tengo 3 registros e identifica el num 2 entonces el gasto pasa a ser el num 2 
+      y se va a colocar como actualizado y los que no cumplen la condicion los sigo retornando porque 
+      no queremos que se nos pierda informacion   */
+      setGastos(gastosActualizados)    
+
+
+    }else{
+      /* Nuevo Gasto */
+      gasto.id = generarId() /* le agregamos y generamos un nuevo Id */
+      gasto.fecha = Date.now()
+      setGastos([...gastos, gasto])
+    }
     
     /* Permite ocultar el Id al darle click en añadir gasto */
     setAnimarModal(false)
