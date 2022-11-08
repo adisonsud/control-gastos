@@ -18,7 +18,9 @@ function App() {
   const [modal, setModal] = useState(false)
   const [animarModal, setAnimarModal] = useState(false)
   
-  const [gastoEditar, setGastoEditar] = useState({})
+  /* nesecitamos pasarle el obj gastoEditar al Modal */
+  /* pasamos el obj setGastoEditar al Modal */
+  const [gastoEditar, setGastoEditar] = useState({}) 
   
   useEffect(() => {
     if( Object.keys(gastoEditar).length > 0 ){
@@ -29,16 +31,16 @@ function App() {
     setTimeout(() => {
       setAnimarModal(true)
     }, 300);
-  } 
+    } 
   
-}, [gastoEditar])
+  }, [gastoEditar])
 
+/* ---------------------------------------------------------------------------- */
 
 /* configuracion al clickear la img "+" */
   const handleNuevoGasto = () => {
     /* despues de darle click se abrirá el modal */
     setModal(true)
-    
     /* limpiara los datos guardados despues de editar loss gastosg   */
     setGastoEditar({})
     /* le da 3 segundos para que aparezca el modal */
@@ -46,7 +48,7 @@ function App() {
       setAnimarModal(true)
     }, 300);
   }
-  
+  /* ---------------------------------------------------------------------------- */
   const guardarGasto = gasto => {
     if(gasto.id){
       /* actualizar o modificacion de los gastos */
@@ -55,23 +57,27 @@ function App() {
         /* ejemplo : Si tengo 3 registros e identifica el num 2 entonces el gasto pasa a ser el num 2 
         y se va a colocar como actualizado y los que no cumplen la condicion los sigo retornando porque 
         no queremos que se nos pierda informacion   */
-        setGastos(gastosActualizados)    
-
-
+        setGastos(gastosActualizados)
+        setGastoEditar({})    
       }else{
-        /* Nuevo Gasto */
-        gasto.id = generarId() /* le agregamos y generamos un nuevo Id */
-        gasto.fecha = Date.now()
-        setGastos([...gastos, gasto])
-      }
-      
+      /* Nuevo Gasto */
+      gasto.id = generarId() /* le agregamos y generamos un nuevo Id */
+      gasto.fecha = Date.now()
+      setGastos([...gastos, gasto])
+    }
+    
       /* Permite ocultar el Id al darle click en añadir gasto */
     setAnimarModal(false)
     setTimeout(() => {
       setModal(false)  
     }, 500);
   }
-  
+  /* ---------------------------------------------------------------------------- */
+  const eliminarGasto = id =>{
+    const gastosActualizados = gastos.filter(gasto => gasto.id !== id)
+    setGastos(gastosActualizados);
+  }
+  /* ---------------------------------------------------------------------------- */
   return (
     <div className={modal ? 'fijar' : ''}>
       
@@ -91,6 +97,7 @@ function App() {
             <ListadoGastos
               gastos = {gastos}
               setGastoEditar = {setGastoEditar}
+              eliminarGasto = {eliminarGasto} /* lo pasamos por listadoGastos luego a Gasto */
             />
           </main>  
           <div className='nuevo-gasto'>
@@ -108,7 +115,8 @@ function App() {
                   animarModal = {animarModal}
                   setAnimarModal = {setAnimarModal}
                   guardarGasto = {guardarGasto}
-                  gastoEditar = {gastoEditar}
+                  gastoEditar = {gastoEditar} /* De esta forma sabra q gasto tiene q editar y q info actual tiene este gasto */
+                  setGastoEditar = {setGastoEditar}
                   />}
 
     </div> 

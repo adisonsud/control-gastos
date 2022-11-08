@@ -1,19 +1,22 @@
-/* Modal es e toda la pantalla que aperece al precionar el agregar "+" */
+/* Modal es e toda la pantalla que aperece al presionar el agregar "+" */
+
 import { useState, useEffect } from 'react'
 import Mensaje from './Mensaje'
 import CerrarBtn from '../img/cerrar.svg' 
-import Gasto from './Gasto'
 
-const Modal = ({setModal, animarModal, setAnimarModal, guardarGasto, gastoEditar}) => {
+
+const Modal = ({setModal, animarModal, setAnimarModal, guardarGasto, gastoEditar, setGastoEditar}) => {
 
   const [mensaje, setMensaje] = useState('')
   const [nombre, setNombre] = useState('')
   const [cantidad, setCantidad] = useState('')
   const [categoria, setCategoria] = useState('')
-  const [fecha, setFecha] = useState('')
+  const [fecha, setFecha] = useState('') /* para solucionar la fecha despues de editar */
   const [id, setId] = useState('') /* la forma de saber si estamos editando o 
-  si estamos creando un nuevo registro es creando  const [id, setId] = useState('')*/
+  si estamos creando un nuevo registro es creando  const [id, setId] = useState('')
+  con la finalidad de guardar los cambios*/
 
+  /* configurando al seleccionar editar  */
   useEffect(() => {
     /* si gasto editar viene vacio pues es un registro nuevo.
     pero si viene con algo entonces estamos editando, si estamos editando vamos a llenar los campos 
@@ -22,7 +25,7 @@ const Modal = ({setModal, animarModal, setAnimarModal, guardarGasto, gastoEditar
       setNombre(gastoEditar.nombre)
       setCantidad(gastoEditar.cantidad)
       setCategoria(gastoEditar.categoria)
-      setId(gastoEditar.id)
+      setId(gastoEditar.id) /* Pasamos a configurar la funciom guardarGasto en el App.jsx */
       setFecha(gastoEditar.fecha)
     } 
   }, [])
@@ -31,7 +34,7 @@ const Modal = ({setModal, animarModal, setAnimarModal, guardarGasto, gastoEditar
   const ocultarModal = () => {
     /* esto permite ocultar el modal */
     setAnimarModal(false)
-
+    setGastoEditar({}) /* limpiara lo que se guarda en el state una vez cerremos el modal */
     setTimeout(() => {
       setModal(false)  
     }, 500);
