@@ -12,7 +12,10 @@ function App() {
   
   const [gastos, setGastos] = useState([])
 
-  const [presupuesto, setPresupuesto] = useState(0)
+  const [presupuesto, setPresupuesto] = useState(
+    /* lo almacenamos en 'presupuesto' y si no existe ese elemento el localstoge le va a agregar un 0 coo valor inicial */
+    localStorage.getItem('presupuesto') ?? 0
+    )
   const [isValidPresupuesto, setIsValidPresupuesto] = useState(false)
 
   const [modal, setModal] = useState(false)
@@ -22,6 +25,7 @@ function App() {
   /* pasamos el obj setGastoEditar al Modal */
   const [gastoEditar, setGastoEditar] = useState({}) 
   
+  /* ---------------------------------------------------------------------------- */
   useEffect(() => {
     if( Object.keys(gastoEditar).length > 0 ){
       /* despues de darle click se abrirá el modal */
@@ -35,6 +39,12 @@ function App() {
   
   }, [gastoEditar])
 
+/* ---------------------------------------------------------------------------- */
+  useEffect(() => {
+    /* lo guardamos en 'presupuesto', y en caso no este presente la variable presupuesto le pondremos 0*/
+    localStorage.setItem('presupuesto', presupuesto ?? 0)
+  }, [presupuesto])
+  
 /* ---------------------------------------------------------------------------- */
 
 /* configuracion al clickear la img "+" */
