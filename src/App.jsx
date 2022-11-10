@@ -4,47 +4,83 @@ import { useState, useEffect } from 'react'
 import Header from './components/Header'
 import Modal from './components/Modal'
 import ListadoGastos from './components/ListadoGastos'
+import Filtros from './components/Filtros'
 import { generarId } from './helpers'
 import IconoNuevoGasto from './img/nuevo-gasto.svg'
+
 
 /* inicio function App */
 function App() {
   
-  const [gastos, setGastos] = useState([])
-
-  const [presupuesto, setPresupuesto] = useState(
-    /* lo almacenamos en 'presupuesto' y si no existe ese elemento el localstoge le va a agregar un 0 coo valor inicial */
-    localStorage.getItem('presupuesto') ?? 0
+  const [gastos, setGastos] = useState(
+    /* si existen elementos en el localstoge lo convertimos de string a array con JSON.parse
+    caso contrario inicia con [] */ /* 2 */
+    localStorage.getItem('gastos') ? JSON.parse(localStorage.getItem('gastos')) : []
     )
-  const [isValidPresupuesto, setIsValidPresupuesto] = useState(false)
+    
+  const [presupuesto, setPresupuesto] = useState(
+    /* lo almacenamos en 'presupuesto' y si no existe ese elemento el localstoge 
+    le va a agregar un 0 como valor inicial */ /* 2 */
+    Number(localStorage.getItem('presupuesto')) ?? 0
+    )
+    
+    const [isValidPresupuesto, setIsValidPresupuesto] = useState(false)
+    
+    const [modal, setModal] = useState(false)
+    const [animarModal, setAnimarModal] = useState(false)
+    
+    /* nesecitamos pasarle el obj gastoEditar al Modal */
+    /* pasamos el obj setGastoEditar al Modal */
+    const [gastoEditar, setGastoEditar] = useState({}) 
+    
+    const [filtro, setFiltro] = useState('')
+    const [gastosFiltrados, setGastosFiltrados] = useState([])
 
-  const [modal, setModal] = useState(false)
-  const [animarModal, setAnimarModal] = useState(false)
-  
-  /* nesecitamos pasarle el obj gastoEditar al Modal */
-  /* pasamos el obj setGastoEditar al Modal */
-  const [gastoEditar, setGastoEditar] = useState({}) 
-  
-  /* ---------------------------------------------------------------------------- */
+    
+    /* ---------------------------------------------------------------------------- */
   useEffect(() => {
     if( Object.keys(gastoEditar).length > 0 ){
       /* despues de darle click se abrirá el modal */
-    setModal(true)
-    
-    /* le da 3 segundos para que aparezca el modal */
-    setTimeout(() => {
-      setAnimarModal(true)
-    }, 300);
+      setModal(true)
+      
+      /* le da 3 segundos para que aparezca el modal */
+      setTimeout(() => {
+        setAnimarModal(true)
+      }, 300);
     } 
-  
+    
   }, [gastoEditar])
-
-/* ---------------------------------------------------------------------------- */
-  useEffect(() => {
-    /* lo guardamos en 'presupuesto', y en caso no este presente la variable presupuesto le pondremos 0*/
-    localStorage.setItem('presupuesto', presupuesto ?? 0)
-  }, [presupuesto])
   
+/* ---------------------------------------------------------------------------- */
+/* guardando presupuesto en el local storage  */
+useEffect(() => {/* 1 */
+  /* lo guardamos en 'presupuesto', y en caso no este presente la variable presupuesto le pondremos 0*/
+  localStorage.setItem('presupuesto', presupuesto ?? 0)
+}, [presupuesto])
+
+
+/* no podemos almacenar arreglos en el local storage para ello convertimos el arreglo
+con JSON.stringify a un string  */
+useEffect(() => { /* 1 */
+localStorage.setItem('gastos', JSON.stringify(gastos) ?? [])
+}, [gastos])
+
+useEffect(() => {
+  if(filtro) {
+    /* Filtrar gasto por categoria */
+    const gastosFiltrados = gastos.filter(gasto => gasto.categoria === filtro)
+    setGastosFiltrados(gastosFiltrados);
+  }
+}, [filtro])
+
+
+
+useEffect(() => { /* 3 */
+  const presupuestoLS = Number(localStorage.getItem('presupuesto')) ?? 0
+  if(presupuestoLS){
+    setIsValidPresupuesto(true)
+    }
+  }, [])
 /* ---------------------------------------------------------------------------- */
 
 /* configuracion al clickear la img "+" */
@@ -104,12 +140,23 @@ function App() {
       {isValidPresupuesto && (
         <> {/* retornamos un fragment */}
           <main>
+            <Filtros
+              filtro = {filtro}
+              setFiltro = {setFiltro}
+
+            />
+
             <ListadoGastos
               gastos = {gastos}
               setGastoEditar = {setGastoEditar}
               eliminarGasto = {eliminarGasto} /* lo pasamos por listadoGastos luego a Gasto */
+              filtro = {filtro}
+              gastosFiltrados = {gastosFiltrados}
+
             />
           </main>  
+
+          {/* boton para agregar nuevo */}
           <div className='nuevo-gasto'>
             <img 
               src={IconoNuevoGasto} 
