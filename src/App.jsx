@@ -128,12 +128,13 @@ useEffect(() => { /* 3 */
     <div className={modal ? 'fijar' : ''}>
       
       <Header 
-      /* lo exportamos al Header */
-      gastos = {gastos}
-      presupuesto = {presupuesto} 
-      setPresupuesto = {setPresupuesto} 
-      isValidPresupuesto = {isValidPresupuesto}
-      setIsValidPresupuesto = {setIsValidPresupuesto}
+        /* lo exportamos al Header */
+        gastos = {gastos}
+        setGastos = {setGastos}
+        presupuesto = {presupuesto} 
+        setPresupuesto = {setPresupuesto} 
+        isValidPresupuesto = {isValidPresupuesto}
+        setIsValidPresupuesto = {setIsValidPresupuesto}
       />
 
       {/* Al poner '&&' le decimos q si es un presupuesto valido se ejecutara el codigo */}
